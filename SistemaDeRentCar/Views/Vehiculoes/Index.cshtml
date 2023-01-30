@@ -1,0 +1,83 @@
+﻿@model IEnumerable<SistemaDeRentCar.Models.Vehiculo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NChasis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NMotor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NPlaca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoDeVehiculo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Marca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Modelo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoDeCombustible)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NChasis)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NMotor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NPlaca)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.TipoDeVehiculo.Description)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Marca.Description)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Modelo.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDeCombustible.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
