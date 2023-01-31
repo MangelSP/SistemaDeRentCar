@@ -51,7 +51,9 @@ namespace SistemaDeRentCar.Controllers
         {
             ViewData["CurrentFilter"] = searchString;
 
-            var rentadevoluciones = from s in _context.RentaDevolucions
+            var rentadevoluciones = from s in _context.RentaDevolucions.Include(r => r.Cliente)
+                                                     .Include(r => r.Empleado)
+                                                     .Include(r => r.Vehiculo)
                                     select s;
             if (searchString != null)
             {

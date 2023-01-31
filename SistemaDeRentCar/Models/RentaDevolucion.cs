@@ -6,8 +6,11 @@ namespace SistemaDeRentCar.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public int IdCliente { get; set; }
+        [Required]
         public int IdVehiculo  { get; set; }
+        [Required]
         public int IdEmpleado { get; set; }
         public Cliente? Cliente { get; set; }
         public Vehiculo? Vehiculo { get; set; }
