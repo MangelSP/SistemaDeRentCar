@@ -21,7 +21,7 @@ namespace SistemaDeRentCar.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-              return _context.Clientes != null ? 
+              return _context.Clientes != null ?
                           View(await _context.Clientes.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Clientes'  is null.");
         }

@@ -1,4 +1,4 @@
-﻿@model SistemaDeRentCar.Models.Vehiculo
+﻿@model SistemaDeRentCar.Models.RentaDevolucion
 
 @{
     ViewData["Title"] = "Details";
@@ -7,56 +7,56 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Vehiculo</h4>
+    <h4>RentaDevolucion</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Cliente)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Cliente.Nombre)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NChasis)
+            @Html.DisplayNameFor(model => model.Vehiculo)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NChasis)
+            @Html.DisplayFor(model => model.Vehiculo.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NMotor)
+            @Html.DisplayNameFor(model => model.Empleado)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NMotor)
+            @Html.DisplayFor(model => model.Empleado.Nombre)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NPlaca)
+            @Html.DisplayNameFor(model => model.FechaRenta)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NPlaca)
+            @Html.DisplayFor(model => model.FechaRenta)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TipoDeVehiculo)
+            @Html.DisplayNameFor(model => model.FechaDevolucion)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TipoDeVehiculo.Description)
+            @Html.DisplayFor(model => model.FechaDevolucion)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Marca)
+            @Html.DisplayNameFor(model => model.MontoDia)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Marca.Description)
+            @Html.DisplayFor(model => model.MontoDia)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modelo)
+            @Html.DisplayNameFor(model => model.CantidadDia)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modelo.Description)
+            @Html.DisplayFor(model => model.CantidadDia)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TipoDeCombustible)
+            @Html.DisplayNameFor(model => model.Comentario)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TipoDeCombustible.Description)
+            @Html.DisplayFor(model => model.Comentario)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Estado)

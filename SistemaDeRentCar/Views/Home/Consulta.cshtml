@@ -1,0 +1,115 @@
+﻿@model PaginatedList<SistemaDeRentCar.Models.RentaDevolucion>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenido</h1>
+    <p>Esto son los vehiculos que tenemos disponibles.</p>
+</div>
+<br />
+
+
+<form asp-action="ConsultaCriterio" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Cliente
+            </th>
+            <th>
+                Vehiculo
+            </th>
+            <th>
+                Empleado que lo asistio
+            </th>
+            <th>
+                Fecha de la renta
+            </th>
+            <th>
+                Fecha de la devolucion
+            </th>
+            <th>
+                Monto del dia
+            </th>
+            <th>
+                Cantidad de dia
+            </th>
+            <th>
+                Comentario
+            </th>
+            <th>
+                Esta rentado
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vehiculo.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaRenta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaDevolucion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MontoDia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CantidadDia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comentario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

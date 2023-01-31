@@ -15,5 +15,7 @@ namespace SistemaDeRentCar.Models
         public bool Estado { get; set; }
         [NotMapped]
         public virtual Inspeccion? Inspeccion { get; set; }
+        [NotMapped]
+        public virtual RentaDevolucion? RentaDevolucion { get; set; }
     }
 }

@@ -38,6 +38,9 @@ namespace SistemaDeRentCar.Models
             modelBuilder.Entity<Vehiculo>().HasOne(x => x.Modelo).WithOne(x => x.Vehiculo).HasForeignKey<Vehiculo>(x => x.IdModelo);
             modelBuilder.Entity<Vehiculo>().HasOne(x => x.TipoDeCombustible).WithOne(x => x.Vehiculo).HasForeignKey<Vehiculo>(x => x.TipoCombustible);
 
+            modelBuilder.Entity<RentaDevolucion>().HasOne(x => x.Cliente).WithOne(x => x.RentaDevolucion).HasForeignKey<RentaDevolucion>(x => x.IdCliente);
+            modelBuilder.Entity<RentaDevolucion>().HasOne(x => x.Empleado).WithOne(x => x.RentaDevolucion).HasForeignKey<RentaDevolucion>(x => x.IdEmpleado);
+            modelBuilder.Entity<RentaDevolucion>().HasOne(x => x.Vehiculo).WithOne(x => x.RentaDevolucion).HasForeignKey<RentaDevolucion>(x => x.IdVehiculo);
 
 
         }

@@ -14,6 +14,7 @@ namespace SistemaDeRentCar.Models
         public DateTime FechaIngreso { get; set; } = DateTime.UtcNow;
         public bool Estado { get; set; }
         public virtual Inspeccion? Inspeccion { get; set; }
+        public virtual RentaDevolucion? RentaDevolucion { get; set; }
 
 
     }

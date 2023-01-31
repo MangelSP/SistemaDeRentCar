@@ -24,6 +24,7 @@ namespace SistemaDeRentCar.Models
         public virtual TipoDeCombustible? TipoDeCombustible { get; set; }
         public bool Estado { get; set; }
         public virtual Inspeccion? Inspeccion { get; set; }
+        public virtual RentaDevolucion? RentaDevolucion { get; set; }
 
     }
 }
