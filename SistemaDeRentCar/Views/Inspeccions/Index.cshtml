@@ -1,46 +1,60 @@
-﻿@model IEnumerable<SistemaDeRentCar.Models.Inspeccion>
+﻿@model PaginatedList<SistemaDeRentCar.Models.Inspeccion>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
+<div class="text-center">
+    <h1 class="display-4">Inspecciones</h1>
+    <p>Esto son los Inspecciones que estan registrado.</p>
+</div>
+<br />
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="index">Volver a la lista</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Vehiculo)
+              Vehiculo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente)
+                Cliente
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TieneRalladuras)
+                TieneRalladuras
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CantidadCombustible)
+                CantidadCombustible
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TieneGomaRespuesta)
+                TieneGomaRespuesta
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TieneGato)
+                TieneGato
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EstadoGomas)
+                EstadoGomas
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fecha)
+                Fecha
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Empleado)
+                Empleado
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Estado)
+                Estado
             </th>
             <th></th>
         </tr>
@@ -79,11 +93,32 @@
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
             <td>
-                     <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.IdTransacción">Edit</a> |
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.IdTransacción">Details</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.IdTransacción">Delete</a>
+             <div class="btn-group" role="group" aria-label="Basic example">
+                                 <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.IdTransacción">Edit</a> 
+                                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.IdTransacción">Details</a> 
+                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.IdTransacción">Delete</a>
+                            </div>
             </td>
         </tr>
 }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

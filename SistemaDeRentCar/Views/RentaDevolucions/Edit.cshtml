@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="IdVehiculo" class="control-label"></label>
-                <select asp-for="IdVehiculo" class="form-control" asp-items="ViewBag.IdVehiculo" disabled ></select>
+                <select asp-for="IdVehiculo" class="form-control" asp-items="ViewBag.IdVehiculo"></select>
                 <span asp-validation-for="IdVehiculo" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,7 +55,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
+                    <input class="form-check-input" asp-for="Estado" /> Estado)
                 </label>
             </div>
             <div class="form-group">
@@ -69,6 +69,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

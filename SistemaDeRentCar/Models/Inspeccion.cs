@@ -18,7 +18,7 @@ namespace SistemaDeRentCar.Models
         public string EstadoGomas { get; set; } = string.Empty;
         [DataType(DataType.DateTime)]
         public DateTime Fecha { get; set; }
-        public int IdEmpleadoInspeccuion { get; set; }
+        public int IdEmpleado {get; set; }
         public virtual Empleado? Empleado { get; set; }
         public bool Estado { get; set; }
 

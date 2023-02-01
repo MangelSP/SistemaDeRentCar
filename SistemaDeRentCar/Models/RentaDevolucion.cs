@@ -8,13 +8,14 @@ namespace SistemaDeRentCar.Models
         public int Id { get; set; }
         [Required]
         public int IdCliente { get; set; }
+        public Cliente? Cliente { get; set; }
         [Required]
         public int IdVehiculo  { get; set; }
+        public Vehiculo? Vehiculo { get; set; }
         [Required]
         public int IdEmpleado { get; set; }
-        public Cliente? Cliente { get; set; }
-        public Vehiculo? Vehiculo { get; set; }
         public Empleado? Empleado { get; set; }
+
         [DataType(DataType.DateTime)]
         public DateTime FechaRenta { get; set; } = DateTime.UtcNow;
         [DataType(DataType.DateTime)]

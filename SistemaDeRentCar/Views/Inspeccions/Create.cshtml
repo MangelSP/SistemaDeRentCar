@@ -22,7 +22,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TieneRalladuras" /> @Html.DisplayNameFor(model => model.TieneRalladuras)
+                    <input class="form-check-input" asp-for="TieneRalladuras" /> TieneRalladuras)
                 </label>
             </div>
             <div class="form-group">
@@ -32,12 +32,12 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TieneGomaRespuesta" /> @Html.DisplayNameFor(model => model.TieneGomaRespuesta)
+                    <input class="form-check-input" asp-for="TieneGomaRespuesta" /> TieneGomaRespuesta)
                 </label>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TieneGato" /> @Html.DisplayNameFor(model => model.TieneGato)
+                    <input class="form-check-input" asp-for="TieneGato" /> TieneGato)
                 </label>
             </div>
             <div class="form-group">
@@ -51,12 +51,12 @@
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdEmpleadoInspeccuion" class="control-label"></label>
-                <select asp-for="IdEmpleadoInspeccuion" class ="form-control" asp-items="ViewBag.IdEmpleadoInspeccuion"></select>
+                <label asp-for="IdEmpleado" class="control-label"></label>
+                <select asp-for="IdEmpleado" class ="form-control" asp-items="ViewBag.IdEmpleado"></select>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
+                    <input class="form-check-input" asp-for="Estado" /> Estado)
                 </label>
             </div>
             <div class="form-group">
@@ -70,6 +70,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -11,8 +11,8 @@ using SistemaDeRentCar.Models;
 namespace SistemaDeRentCar.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230130230240_ADDEDNEWENTITY")]
-    partial class ADDEDNEWENTITY
+    [Migration("20230201151638_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,7 +109,7 @@ namespace SistemaDeRentCar.Migrations
                     b.Property<int>("IdCliente")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IdEmpleadoInspeccuion")
+                    b.Property<int>("IdEmpleado")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("IdVehículo")
@@ -126,14 +126,11 @@ namespace SistemaDeRentCar.Migrations
 
                     b.HasKey("IdTransacción");
 
-                    b.HasIndex("IdCliente")
-                        .IsUnique();
+                    b.HasIndex("IdCliente");
 
-                    b.HasIndex("IdEmpleadoInspeccuion")
-                        .IsUnique();
+                    b.HasIndex("IdEmpleado");
 
-                    b.HasIndex("IdVehículo")
-                        .IsUnique();
+                    b.HasIndex("IdVehículo");
 
                     b.ToTable("Inspeccions");
                 });
@@ -176,8 +173,7 @@ namespace SistemaDeRentCar.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdMarca")
-                        .IsUnique();
+                    b.HasIndex("IdMarca");
 
                     b.ToTable("Modelos");
                 });
@@ -218,14 +214,11 @@ namespace SistemaDeRentCar.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCliente")
-                        .IsUnique();
+                    b.HasIndex("IdCliente");
 
-                    b.HasIndex("IdEmpleado")
-                        .IsUnique();
+                    b.HasIndex("IdEmpleado");
 
-                    b.HasIndex("IdVehiculo")
-                        .IsUnique();
+                    b.HasIndex("IdVehiculo");
 
                     b.ToTable("RentaDevolucions");
                 });
@@ -288,6 +281,9 @@ namespace SistemaDeRentCar.Migrations
                     b.Property<int>("IdModelo")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("IdTipoCombustible")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("IdTipoVehiculo")
                         .HasColumnType("INTEGER");
 
@@ -306,22 +302,15 @@ namespace SistemaDeRentCar.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TipoCombustible")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("IdMarca")
-                        .IsUnique();
+                    b.HasIndex("IdMarca");
 
-                    b.HasIndex("IdModelo")
-                        .IsUnique();
+                    b.HasIndex("IdModelo");
 
-                    b.HasIndex("IdTipoVehiculo")
-                        .IsUnique();
+                    b.HasIndex("IdTipoCombustible");
 
-                    b.HasIndex("TipoCombustible")
-                        .IsUnique();
+                    b.HasIndex("IdTipoVehiculo");
 
                     b.ToTable("Vehiculos");
                 });
@@ -329,20 +318,20 @@ namespace SistemaDeRentCar.Migrations
             modelBuilder.Entity("SistemaDeRentCar.Models.Inspeccion", b =>
                 {
                     b.HasOne("SistemaDeRentCar.Models.Cliente", "Cliente")
-                        .WithOne("Inspeccion")
-                        .HasForeignKey("SistemaDeRentCar.Models.Inspeccion", "IdCliente")
+                        .WithMany("Inspeccion")
+                        .HasForeignKey("IdCliente")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SistemaDeRentCar.Models.Empleado", "Empleado")
-                        .WithOne("Inspeccion")
-                        .HasForeignKey("SistemaDeRentCar.Models.Inspeccion", "IdEmpleadoInspeccuion")
+                        .WithMany("Inspeccion")
+                        .HasForeignKey("IdEmpleado")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SistemaDeRentCar.Models.Vehiculo", "Vehiculo")
-                        .WithOne("Inspeccion")
-                        .HasForeignKey("SistemaDeRentCar.Models.Inspeccion", "IdVehículo")
+                        .WithMany("Inspeccion")
+                        .HasForeignKey("IdVehículo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -356,8 +345,8 @@ namespace SistemaDeRentCar.Migrations
             modelBuilder.Entity("SistemaDeRentCar.Models.Modelo", b =>
                 {
                     b.HasOne("SistemaDeRentCar.Models.Marca", "Marca")
-                        .WithOne("Modelo")
-                        .HasForeignKey("SistemaDeRentCar.Models.Modelo", "IdMarca")
+                        .WithMany("Modelo")
+                        .HasForeignKey("IdMarca")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -367,20 +356,20 @@ namespace SistemaDeRentCar.Migrations
             modelBuilder.Entity("SistemaDeRentCar.Models.RentaDevolucion", b =>
                 {
                     b.HasOne("SistemaDeRentCar.Models.Cliente", "Cliente")
-                        .WithOne("RentaDevolucion")
-                        .HasForeignKey("SistemaDeRentCar.Models.RentaDevolucion", "IdCliente")
+                        .WithMany("RentaDevolucion")
+                        .HasForeignKey("IdCliente")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SistemaDeRentCar.Models.Empleado", "Empleado")
-                        .WithOne("RentaDevolucion")
-                        .HasForeignKey("SistemaDeRentCar.Models.RentaDevolucion", "IdEmpleado")
+                        .WithMany("RentaDevolucion")
+                        .HasForeignKey("IdEmpleado")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SistemaDeRentCar.Models.Vehiculo", "Vehiculo")
-                        .WithOne("RentaDevolucion")
-                        .HasForeignKey("SistemaDeRentCar.Models.RentaDevolucion", "IdVehiculo")
+                        .WithMany("RentaDevolucion")
+                        .HasForeignKey("IdVehiculo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -394,26 +383,26 @@ namespace SistemaDeRentCar.Migrations
             modelBuilder.Entity("SistemaDeRentCar.Models.Vehiculo", b =>
                 {
                     b.HasOne("SistemaDeRentCar.Models.Marca", "Marca")
-                        .WithOne("Vehiculo")
-                        .HasForeignKey("SistemaDeRentCar.Models.Vehiculo", "IdMarca")
+                        .WithMany("Vehiculo")
+                        .HasForeignKey("IdMarca")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SistemaDeRentCar.Models.Modelo", "Modelo")
-                        .WithOne("Vehiculo")
-                        .HasForeignKey("SistemaDeRentCar.Models.Vehiculo", "IdModelo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SistemaDeRentCar.Models.TipoDeVehiculo", "TipoDeVehiculo")
-                        .WithOne("Vehiculo")
-                        .HasForeignKey("SistemaDeRentCar.Models.Vehiculo", "IdTipoVehiculo")
+                        .WithMany("Vehiculo")
+                        .HasForeignKey("IdModelo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SistemaDeRentCar.Models.TipoDeCombustible", "TipoDeCombustible")
-                        .WithOne("Vehiculo")
-                        .HasForeignKey("SistemaDeRentCar.Models.Vehiculo", "TipoCombustible")
+                        .WithMany("Vehiculo")
+                        .HasForeignKey("IdTipoCombustible")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SistemaDeRentCar.Models.TipoDeVehiculo", "TipoDeVehiculo")
+                        .WithMany("Vehiculo")
+                        .HasForeignKey("IdTipoVehiculo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

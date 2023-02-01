@@ -19,11 +19,29 @@ namespace SistemaDeRentCar.Controllers
         }
 
         // GET: Empleadoes
-        public async Task<IActionResult> Index()
+    
+        public async Task<IActionResult> Index(string searchString, string currentFilter, int? pageNumber)
         {
-              return _context.Empleados != null ? 
-                          View(await _context.Empleados.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Empleados'  is null.");
+            ViewData["CurrentFilter"] = searchString;
+
+            var result = from s in _context.Empleados
+                         select s;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = result.Where(s => s.Nombre.Contains(searchString)
+                                                        || s.Cedula.Contains(searchString));
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<Empleado>.CreateAsync(result.AsNoTracking(), pageNumber ?? 1, pageSize));
+
         }
 
         // GET: Empleadoes/Details/5

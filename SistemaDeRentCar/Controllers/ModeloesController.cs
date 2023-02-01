@@ -19,11 +19,30 @@ namespace SistemaDeRentCar.Controllers
         }
 
         // GET: Modeloes
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(string searchString, string currentFilter, int? pageNumber)
         {
-            var applicationDbContext = _context.Modelos.Include(m => m.Marca);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentFilter"] = searchString;
+
+            var result = from s in _context.Modelos
+                         select s;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = result.Where(s => s.Description.Contains(searchString));
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<Modelo>.CreateAsync(result.AsNoTracking(), pageNumber ?? 1, pageSize));
+
         }
+
 
         // GET: Modeloes/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -19,11 +19,31 @@ namespace SistemaDeRentCar.Controllers
         }
 
         // GET: RentaDevolucions
-        public async Task<IActionResult> Index()
+
+ 
+        public async Task<IActionResult> Index(string searchString, string currentFilter, int? pageNumber)
         {
-            var applicationDbContext = _context.RentaDevolucions.Include(r => r.Cliente).Include(r => r.Empleado).Include(r => r.Vehiculo);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentFilter"] = searchString;
+
+            var result = from s in _context.RentaDevolucions.Include(r => r.Cliente).Include(r => r.Empleado).Include(r => r.Vehiculo)
+                         select s;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = result.Where(x => x.Comentario == searchString || x.Id == int.Parse(searchString) || x.Cliente.Nombre == searchString);
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<RentaDevolucion>.CreateAsync(result.AsNoTracking(), pageNumber ?? 1, pageSize));
+
         }
+
 
         // GET: RentaDevolucions/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -51,7 +71,7 @@ namespace SistemaDeRentCar.Controllers
         {
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre");
             ViewData["IdEmpleado"] = new SelectList(_context.Empleados, "Id", "Nombre");
-            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculos.Where(x => x.Estado == false), "Id", "Description");
+            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculos, "Id", "Description");
             return View();
         }
 
@@ -63,11 +83,8 @@ namespace SistemaDeRentCar.Controllers
         public async Task<IActionResult> Create([Bind("Id,IdCliente,IdVehiculo,IdEmpleado,FechaRenta,FechaDevolucion,MontoDia,CantidadDia,Comentario,Estado")] RentaDevolucion rentaDevolucion)
         {
             if (ModelState.IsValid)
-            {    
+            {
                 _context.Add(rentaDevolucion);
-                var vehiculoResult = await _context.Vehiculos.Where(x => x.Id == rentaDevolucion.IdVehiculo).FirstOrDefaultAsync();
-                vehiculoResult.Estado = true;
-                _context.Vehiculos.Update(vehiculoResult);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -92,7 +109,7 @@ namespace SistemaDeRentCar.Controllers
             }
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre", rentaDevolucion.IdCliente);
             ViewData["IdEmpleado"] = new SelectList(_context.Empleados, "Id", "Nombre", rentaDevolucion.IdEmpleado);
-            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculos.Where(x=>x.Id == rentaDevolucion.IdVehiculo), "Id", "Description", rentaDevolucion.IdVehiculo);
+            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculos, "Id", "Description", rentaDevolucion.IdVehiculo);
             return View(rentaDevolucion);
         }
 
@@ -112,9 +129,6 @@ namespace SistemaDeRentCar.Controllers
             {
                 try
                 {
-                    var vehiculoResult = await _context.Vehiculos.Where(x => x.Id == rentaDevolucion.Id).FirstOrDefaultAsync();
-                    vehiculoResult.Estado = true;
-                    _context.Vehiculos.Update(vehiculoResult);
                     _context.Update(rentaDevolucion);
                     await _context.SaveChangesAsync();
                 }
@@ -133,7 +147,7 @@ namespace SistemaDeRentCar.Controllers
             }
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre", rentaDevolucion.IdCliente);
             ViewData["IdEmpleado"] = new SelectList(_context.Empleados, "Id", "Nombre", rentaDevolucion.IdEmpleado);
-            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculos.Where(x => x.Id == rentaDevolucion.IdVehiculo), "Id", "Description", rentaDevolucion.IdVehiculo);
+            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculos, "Id", "Description", rentaDevolucion.IdVehiculo);
             return View(rentaDevolucion);
         }
 

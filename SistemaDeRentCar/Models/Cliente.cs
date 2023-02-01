@@ -13,9 +13,7 @@ namespace SistemaDeRentCar.Models
         public string LimiteCredito { get; set; } = string.Empty;
         public string TipoPersona { get; set;} = string.Empty;
         public bool Estado { get; set; }
-        [NotMapped]
-        public virtual Inspeccion? Inspeccion { get; set; }
-        [NotMapped]
-        public virtual RentaDevolucion? RentaDevolucion { get; set; }
+        public ICollection<Inspeccion>? Inspeccion { get; set; }
+        public ICollection<RentaDevolucion>? RentaDevolucion { get; set; }
     }
 }

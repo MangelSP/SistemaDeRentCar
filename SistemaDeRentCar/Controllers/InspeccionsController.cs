@@ -19,10 +19,31 @@ namespace SistemaDeRentCar.Controllers
         }
 
         // GET: Inspeccions
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(string searchString, string currentFilter, int? pageNumber)
         {
-            var applicationDbContext = _context.Inspeccions.Include(i => i.Cliente).Include(i => i.Empleado).Include(i => i.Vehiculo);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentFilter"] = searchString;
+
+            var result = from s in _context.Inspeccions.Include(i => i.Cliente).Include(i => i.Empleado).Include(i => i.Vehiculo)
+                         select s;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = result.Where(s => s.Cliente.Nombre.Contains(searchString)
+                                                        || s.Cliente.Cedula.Contains(searchString)
+                                                        || s.Empleado.Nombre.Contains(searchString)
+                                                        || s.Fecha.ToString().Contains(searchString));
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<Inspeccion>.CreateAsync(result.AsNoTracking(), pageNumber ?? 1, pageSize));
+
         }
 
         // GET: Inspeccions/Details/5
@@ -50,7 +71,7 @@ namespace SistemaDeRentCar.Controllers
         public IActionResult Create()
         {
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre");
-            ViewData["IdEmpleadoInspeccuion"] = new SelectList(_context.Empleados, "Id", "Nombre");
+            ViewData["IdEmpleado"] = new SelectList(_context.Empleados, "Id", "Nombre");
             ViewData["IdVehículo"] = new SelectList(_context.Vehiculos, "Id", "Description");
             return View();
         }
@@ -60,7 +81,7 @@ namespace SistemaDeRentCar.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdTransacción,IdVehículo,IdCliente,TieneRalladuras,CantidadCombustible,TieneGomaRespuesta,TieneGato,EstadoGomas,Fecha,IdEmpleadoInspeccuion,Estado")] Inspeccion inspeccion)
+        public async Task<IActionResult> Create([Bind("IdTransacción,IdVehículo,IdCliente,TieneRalladuras,CantidadCombustible,TieneGomaRespuesta,TieneGato,EstadoGomas,Fecha,IdEmpleado,Estado")] Inspeccion inspeccion)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +90,7 @@ namespace SistemaDeRentCar.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre", inspeccion.IdCliente);
-            ViewData["IdEmpleadoInspeccuion"] = new SelectList(_context.Empleados, "Id", "Nombre", inspeccion.IdEmpleadoInspeccuion);
+            ViewData["IdEmpleado"] = new SelectList(_context.Empleados, "Id", "Nombre", inspeccion.IdEmpleado);
             ViewData["IdVehículo"] = new SelectList(_context.Vehiculos, "Id", "Description", inspeccion.IdVehículo);
             return View(inspeccion);
         }
@@ -88,7 +109,7 @@ namespace SistemaDeRentCar.Controllers
                 return NotFound();
             }
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre", inspeccion.IdCliente);
-            ViewData["IdEmpleadoInspeccuion"] = new SelectList(_context.Empleados, "Id", "Nombre", inspeccion.IdEmpleadoInspeccuion);
+            ViewData["IdEmpleado"] = new SelectList(_context.Empleados, "Id", "Nombre", inspeccion.IdEmpleado);
             ViewData["IdVehículo"] = new SelectList(_context.Vehiculos, "Id", "Description", inspeccion.IdVehículo);
             return View(inspeccion);
         }
@@ -98,7 +119,7 @@ namespace SistemaDeRentCar.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdTransacción,IdVehículo,IdCliente,TieneRalladuras,CantidadCombustible,TieneGomaRespuesta,TieneGato,EstadoGomas,Fecha,IdEmpleadoInspeccuion,Estado")] Inspeccion inspeccion)
+        public async Task<IActionResult> Edit(int id, [Bind("IdTransacción,IdVehículo,IdCliente,TieneRalladuras,CantidadCombustible,TieneGomaRespuesta,TieneGato,EstadoGomas,Fecha,IdEmpleado,Estado")] Inspeccion inspeccion)
         {
             if (id != inspeccion.IdTransacción)
             {
@@ -126,7 +147,7 @@ namespace SistemaDeRentCar.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nombre", inspeccion.IdCliente);
-            ViewData["IdEmpleadoInspeccuion"] = new SelectList(_context.Empleados, "Id", "Nombre", inspeccion.IdEmpleadoInspeccuion);
+            ViewData["IdEmpleado"] = new SelectList(_context.Empleados, "Id", "Nombre", inspeccion.IdEmpleado);
             ViewData["IdVehículo"] = new SelectList(_context.Vehiculos, "Id", "Description", inspeccion.IdVehículo);
             return View(inspeccion);
         }

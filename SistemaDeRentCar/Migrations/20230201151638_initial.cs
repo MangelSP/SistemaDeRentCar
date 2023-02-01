@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SistemaDeRentCar.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,18 +59,6 @@ namespace SistemaDeRentCar.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Marcas", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RentaDevolucions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RentaDevolucions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,7 +123,7 @@ namespace SistemaDeRentCar.Migrations
                     IdTipoVehiculo = table.Column<int>(type: "INTEGER", nullable: false),
                     IdMarca = table.Column<int>(type: "INTEGER", nullable: false),
                     IdModelo = table.Column<int>(type: "INTEGER", nullable: false),
-                    TipoCombustible = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdTipoCombustible = table.Column<int>(type: "INTEGER", nullable: false),
                     Estado = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -154,8 +142,8 @@ namespace SistemaDeRentCar.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Vehiculos_TipoDeCombustibles_TipoCombustible",
-                        column: x => x.TipoCombustible,
+                        name: "FK_Vehiculos_TipoDeCombustibles_IdTipoCombustible",
+                        column: x => x.IdTipoCombustible,
                         principalTable: "TipoDeCombustibles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -181,7 +169,7 @@ namespace SistemaDeRentCar.Migrations
                     TieneGato = table.Column<bool>(type: "INTEGER", nullable: false),
                     EstadoGomas = table.Column<string>(type: "TEXT", nullable: false),
                     Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    IdEmpleadoInspeccuion = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdEmpleado = table.Column<int>(type: "INTEGER", nullable: false),
                     Estado = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -194,8 +182,8 @@ namespace SistemaDeRentCar.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Inspeccions_Empleados_IdEmpleadoInspeccuion",
-                        column: x => x.IdEmpleadoInspeccuion,
+                        name: "FK_Inspeccions_Empleados_IdEmpleado",
+                        column: x => x.IdEmpleado,
                         principalTable: "Empleados",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -207,53 +195,99 @@ namespace SistemaDeRentCar.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RentaDevolucions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IdCliente = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdVehiculo = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdEmpleado = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaRenta = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    FechaDevolucion = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    MontoDia = table.Column<int>(type: "INTEGER", nullable: false),
+                    CantidadDia = table.Column<int>(type: "INTEGER", nullable: false),
+                    Comentario = table.Column<string>(type: "TEXT", nullable: false),
+                    Estado = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RentaDevolucions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RentaDevolucions_Clientes_IdCliente",
+                        column: x => x.IdCliente,
+                        principalTable: "Clientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RentaDevolucions_Empleados_IdEmpleado",
+                        column: x => x.IdEmpleado,
+                        principalTable: "Empleados",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RentaDevolucions_Vehiculos_IdVehiculo",
+                        column: x => x.IdVehiculo,
+                        principalTable: "Vehiculos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Inspeccions_IdCliente",
                 table: "Inspeccions",
-                column: "IdCliente",
-                unique: true);
+                column: "IdCliente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inspeccions_IdEmpleadoInspeccuion",
+                name: "IX_Inspeccions_IdEmpleado",
                 table: "Inspeccions",
-                column: "IdEmpleadoInspeccuion",
-                unique: true);
+                column: "IdEmpleado");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inspeccions_IdVehículo",
                 table: "Inspeccions",
-                column: "IdVehículo",
-                unique: true);
+                column: "IdVehículo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Modelos_IdMarca",
                 table: "Modelos",
-                column: "IdMarca",
-                unique: true);
+                column: "IdMarca");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentaDevolucions_IdCliente",
+                table: "RentaDevolucions",
+                column: "IdCliente");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentaDevolucions_IdEmpleado",
+                table: "RentaDevolucions",
+                column: "IdEmpleado");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentaDevolucions_IdVehiculo",
+                table: "RentaDevolucions",
+                column: "IdVehiculo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehiculos_IdMarca",
                 table: "Vehiculos",
-                column: "IdMarca",
-                unique: true);
+                column: "IdMarca");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehiculos_IdModelo",
                 table: "Vehiculos",
-                column: "IdModelo",
-                unique: true);
+                column: "IdModelo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehiculos_IdTipoCombustible",
+                table: "Vehiculos",
+                column: "IdTipoCombustible");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehiculos_IdTipoVehiculo",
                 table: "Vehiculos",
-                column: "IdTipoVehiculo",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Vehiculos_TipoCombustible",
-                table: "Vehiculos",
-                column: "TipoCombustible",
-                unique: true);
+                column: "IdTipoVehiculo");
         }
 
         /// <inheritdoc />

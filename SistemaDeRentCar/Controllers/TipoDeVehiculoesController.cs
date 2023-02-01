@@ -19,13 +19,30 @@ namespace SistemaDeRentCar.Controllers
         }
 
         // GET: TipoDeVehiculoes
-        public async Task<IActionResult> Index()
-        {
-              return _context.TipoDeVehiculos != null ? 
-                          View(await _context.TipoDeVehiculos.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.TipoDeVehiculos'  is null.");
-        }
 
+
+        public async Task<IActionResult> Index(string searchString, string currentFilter, int? pageNumber)
+        {
+            ViewData["CurrentFilter"] = searchString;
+
+            var result = from s in _context.TipoDeVehiculos
+                         select s;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = result.Where(s => s.Description.Contains(searchString));
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<TipoDeVehiculo>.CreateAsync(result.AsNoTracking(), pageNumber ?? 1, pageSize));
+
+        }
         // GET: TipoDeVehiculoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {

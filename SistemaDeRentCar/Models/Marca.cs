@@ -9,8 +9,8 @@ namespace SistemaDeRentCar.Models
         [StringLength(255)]
         public string Description { get; set; } = string.Empty;
         public bool Estado { get; set; }
-        public virtual Modelo? Modelo { get; set; }
-        public virtual Vehiculo? Vehiculo { get; set; }
+        public  ICollection<Modelo>? Modelo { get; set; }
+        public  ICollection<Vehiculo>? Vehiculo { get; set; }
 
     }
 }

@@ -19,11 +19,28 @@ namespace SistemaDeRentCar.Controllers
         }
 
         // GET: TipoDeCombustibles
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(string searchString, string currentFilter, int? pageNumber)
         {
-              return _context.TipoDeCombustibles != null ? 
-                          View(await _context.TipoDeCombustibles.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.TipoDeCombustibles'  is null.");
+            ViewData["CurrentFilter"] = searchString;
+
+            var result = from s in _context.TipoDeCombustibles
+                         select s;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = result.Where(s => s.Description.Contains(searchString));
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<TipoDeCombustible>.CreateAsync(result.AsNoTracking(), pageNumber ?? 1, pageSize));
+
         }
 
         // GET: TipoDeCombustibles/Details/5
