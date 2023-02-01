@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="ReportDataSet\dsRenta.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsRenta.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="ReportDataSet\dsReport.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsReport.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="rptRenta.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>rptRenta.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ReportDataSet\dsRenta.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsRenta.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="ReportDataSet\dsReport.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsReport.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="rptRenta.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>rptRenta.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>

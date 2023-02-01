@@ -9,6 +9,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEntityFrameworkSqlite().AddDbContext<ApplicationDbContext>();
 var app = builder.Build();
 
+builder.WebHost.UseContentRoot(Directory.GetCurrentDirectory());
+builder.WebHost.UseWebRoot("wwwroot");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
