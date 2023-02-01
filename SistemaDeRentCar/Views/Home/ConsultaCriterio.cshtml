@@ -1,12 +1,12 @@
 ﻿@model PaginatedList<SistemaDeRentCar.Models.RentaDevolucion>
 
 @{
-    ViewData["Title"] = "Consutla por criterio";
+    ViewData["Title"] = "Consulta por criterio";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Bienvenido</h1>
-    <p>Esto son los vehiculos que tenemos disponibles.</p>
+    <h1 class="display-4">Buscaqueda con criterio</h1>
+    <p>Aqui tambien puede imprimir el report de cada renta o devolucion.</p>
 </div>
 <br />
 
@@ -16,7 +16,7 @@
         <p>
             Buscar: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
             <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-action="index">Volver a la lista</a>
+            <a asp-action="ConsultaCriterio">Volver a la lista</a>
         </p>
     </div>
 </form>
