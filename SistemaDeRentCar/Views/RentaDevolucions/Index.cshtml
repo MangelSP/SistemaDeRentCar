@@ -23,6 +23,26 @@
         </p>
     </div>
 </form>
+
+<div class="row">
+    <div class="col-md-4">
+<form asp-action="Print" method="get">
+    <div class="form-actions no-color">
+             <div class="form-group">
+                    <label for="fechaRenta">Birthday (date and time):</label>
+                    <input type="datetime-local" id="birthdaytime" class="form-control" name="fechaRenta">
+                 <label class="control-label">Tipo de vehiculo</label>
+                  <select name="tipoVehiculo" class="form-control" asp-items="ViewBag.IdTipoVehiculo"></select>
+            </div>
+        <br />
+        <div class="form-group">
+                    <input type="submit" value="Reporte" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+</div>
+</div>
+
 <table class="table">
     <thead>
         <tr>

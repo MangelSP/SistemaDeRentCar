@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCore.Reporting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +15,12 @@ namespace SistemaDeRentCar.Controllers
     public class RentaDevolucionsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public RentaDevolucionsController(ApplicationDbContext context)
+        public RentaDevolucionsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
+            _webHostEnvironment = webHostEnvironment;
+
             _context = context;
         }
 
@@ -40,6 +46,8 @@ namespace SistemaDeRentCar.Controllers
                 result = result.Where(x => x.Comentario == searchString || x.Id == int.Parse(searchString) || x.Cliente.Nombre == searchString);
             }
             int pageSize = 3;
+            ViewData["IdTipoVehiculo"] = new SelectList(_context.TipoDeVehiculos, "Id", "Description");
+
             return View(await PaginatedList<RentaDevolucion>.CreateAsync(result.AsNoTracking(), pageNumber ?? 1, pageSize));
 
         }
@@ -194,6 +202,82 @@ namespace SistemaDeRentCar.Controllers
         private bool RentaDevolucionExists(int id)
         {
           return (_context.RentaDevolucions?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        public IActionResult Print(DateTime fechaRenta, string tipoVehiculo)
+        {
+            if (!fechaRenta.Equals(null) || !tipoVehiculo.Equals(null))
+            {
+                ViewData["fechaRenta"] = fechaRenta;
+                ViewData["tipoVehiculo"] = tipoVehiculo;
+                var dt = new DataTable();
+                dt = GetRentaDevolucion(fechaRenta, tipoVehiculo);
+                string mimeType = "";
+                int extension = 1;
+                var path = $"{this._webHostEnvironment.WebRootPath}\\Reports\\ReportRenta.rdlc";
+
+                Dictionary<string, string> parameters = new Dictionary<string, string>();
+                parameters.Add("prm", "Sistema de rentar carro");
+                LocalReport localReport = new LocalReport(path);
+                localReport.AddDataSource("dtReport", dt);
+                var result = localReport.Execute(RenderType.Pdf, extension, parameters, mimeType);
+                return File(result.MainStream, "application/pdf");
+            }
+
+            return RedirectToAction("Index");
+        }
+        public DataTable GetRentaDevolucion(DateTime fechaRenta,string tipoVehiculo)
+        {
+            var result = _context.RentaDevolucions.Include(r => r.Cliente)
+                .Include(r => r.Empleado)
+                .Include(r => r.Vehiculo)
+                .Include(r => r.Vehiculo.Modelo)
+                .Include(r => r.Vehiculo.Marca)
+                .Include(r => r.Vehiculo.TipoDeVehiculo)
+                .Include(r => r.Vehiculo.TipoDeCombustible).Where(x => x.FechaRenta == fechaRenta || x.Vehiculo.TipoDeVehiculo.Description == tipoVehiculo ).ToListAsync();
+            var dt = new DataTable();
+
+            return ConvertToDatatable(result.Result);
+        }
+
+        static DataTable ConvertToDatatable(List<RentaDevolucion> list)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Id");
+            dt.Columns.Add("Cliente");
+            dt.Columns.Add("Vehiculo");
+            dt.Columns.Add("Empleado");
+            dt.Columns.Add("FechaRenta");
+            dt.Columns.Add("FechaDevolucion");
+            dt.Columns.Add("MontoDia");
+            dt.Columns.Add("CantidadDia");
+            dt.Columns.Add("Comentario");
+            dt.Columns.Add("Marca");
+            dt.Columns.Add("Modelo");
+            dt.Columns.Add("TipoGasolina");
+            dt.Columns.Add("TipoVehiculo");
+            foreach (var item in list)
+            {
+                var row = dt.NewRow();
+
+                row["Id"] = item.Id;
+                row["Cliente"] = item.Cliente.Nombre.ToString();
+                row["Marca"] = item.Vehiculo.Marca.Description.ToString();
+                row["Modelo"] = item.Vehiculo.Modelo.Description.ToString();
+                row["TipoGasolina"] = item.Vehiculo.TipoDeCombustible.Description.ToString();
+                row["TipoVehiculo"] = item.Vehiculo.TipoDeVehiculo.Description.ToString();
+                row["Vehiculo"] = item.Vehiculo.Modelo.Description.ToString();
+                row["Empleado"] = item.Empleado.Nombre.ToString();
+                row["FechaRenta"] = item.FechaRenta.ToString();
+                row["FechaDevolucion"] = item.FechaDevolucion.ToString();
+                row["MontoDia"] = item.MontoDia.ToString();
+                row["CantidadDia"] = item.CantidadDia.ToString();
+                row["Comentario"] = item.Comentario.ToString();
+
+                dt.Rows.Add(row);
+            }
+
+            return dt;
         }
     }
 }

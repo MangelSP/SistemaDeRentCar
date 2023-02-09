@@ -7,7 +7,9 @@ namespace SistemaDeRentCar.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string  Nombre  { get; set; } = string.Empty;
+        [StringLength(maximumLength: 20,MinimumLength = 5,ErrorMessage ="El valor maximo es 20 y el minimo es 5.")]
         public string Cedula { get; set; } = string.Empty;
         public string NTarjetaCR { get; set; } = string.Empty;
         public string LimiteCredito { get; set; } = string.Empty;

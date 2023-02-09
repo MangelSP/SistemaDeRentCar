@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Reports\ReportRenta.rdlc" />
     <Content Remove="wwwroot\Reports\rptRentaDevolucion.rdlc" />
   </ItemGroup>
 
@@ -42,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Reports\ReportRenta.rdlc" />
     <None Include="wwwroot\Reports\rptRentaDevolucion.rdlc" />
   </ItemGroup>
 
